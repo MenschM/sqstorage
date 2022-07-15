@@ -3,13 +3,15 @@ version: "3.0"
 services:
   php:
     image: sqstorage:master
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.phpserver
     volumes:
       - "./:/app"
       - "./dba.php:/app/support/dba.php:rw"
 
   db:
-    image: mariadb:10.4
+    image: mariadb:${mariadb_tag}
     environment:
       - MYSQL_DATABASE=tlv
       - MYSQL_USER=tlvUser
@@ -17,7 +19,7 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
 
   web:
-    image: nginx:alpine
+    image: nginx:${nginx_tag}
     ports:
       - "1337:80"
     volumes:
